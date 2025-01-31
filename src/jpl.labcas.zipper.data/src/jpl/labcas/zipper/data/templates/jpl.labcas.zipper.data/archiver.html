@@ -1,0 +1,16 @@
+{# {% extends "base.html" %} #}
+{% load wagtailcore_tags cache static wagtailimages_tags %}
+{% block content %}
+    <div class='row'>
+        <div class='col-auto'>
+            <h1>Archiver</h1>
+            <dl class='row'>
+                <dt class='col-md-4'>ZIP target directory</dt>
+                <dd class='col-md-8'>{{page.zip_target}}</dd>
+            </dl>                
+        </div>        
+    </div>
+
+
+{% endblock content %}
+{# -*- HTML (Jinja) -*- #}

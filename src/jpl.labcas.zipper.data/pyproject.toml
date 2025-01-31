@@ -1,0 +1,57 @@
+[project]
+name = 'jpl.labcas.zipper.data'
+dynamic = ['version']
+requires-python = '>=3.11'
+dependencies = [
+    'wagtail < 6',
+    'django < 5',
+    'celery ~= 5.3.6'
+]
+authors = [
+    {name = 'Sean Kelly', email='kelly@seankelly.biz'}
+]
+description = 'Data handling for Zipperlab, archive preparation for LabCAS downloads'
+readme = 'README.md'
+keywords = ['labcas', 'cancer', 'data', 'zip', 'archive', 'edrn', 'labcas', 'nih', 'nci', 'jpl', 'nasa']
+classifiers = [
+    'Development Status :: 2 - Pre-Alpha',
+    'Intended Audience :: Healthcare Industry',
+    'Intended Audience :: Science/Research',
+    'License :: OSI Approved :: Apache Software License',
+    'Natural Language :: English',
+    'Operating System :: OS Independent',
+    'Programming Language :: Python :: 3',
+]
+license = {file = 'LICENSE.md'}
+
+
+[project.optional-dependencies]
+dev = [
+    'django-extensions > 3, < 4'
+]
+
+
+[project.urls]
+Homepage = 'https://github.com/EDRN/zipperlab'
+Issues = 'https://github.com/EDRN/zipperlab/issues'
+
+
+[project.scripts]
+
+
+[tool.hatch.version]
+path = 'src/jpl/labcas/zipper/data/VERSION.txt'
+pattern = '(?P<version>.+)'
+
+
+[tool.hatch.build.targets.wheel]
+packages = ['src/jpl']
+
+
+[tool.hatch.metadata]
+allow-direct-references = true
+
+
+[build-system]
+requires = ['hatchling']
+build-backend = 'hatchling.build'

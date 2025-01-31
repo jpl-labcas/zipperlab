@@ -1,0 +1,62 @@
+[project]
+name = 'jpl.labcas.zipper.policy'
+dynamic = ['version']
+requires-python = '>=3.11'
+dependencies = [
+    'jpl.labcas.zipper.data',
+    'celery[redis]         ~= 5.3.6',
+    'dj-database-url       ~= 2.1.0',
+    'django                ~= 4.2.9',
+    'django-celery-results ~= 2.5.1',
+    'django-redis          ~= 5.4.0',
+    'psycopg2              == 2.9.6',        # Must match py3-pyscopg2 package installed via Dockerfile
+    'wagtail               ~= 5.2.5',
+]
+authors = [
+    {name = 'Sean Kelly', email='kelly@seankelly.biz'}
+]
+description = 'Site policy for Zipperlab, archive preparation for LabCAS downloads'
+readme = 'README.md'
+keywords = ['labcas', 'cancer', 'data', 'zip', 'archive', 'edrn', 'labcas', 'nih', 'nci', 'jpl', 'nasa']
+classifiers = [
+    'Development Status :: 2 - Pre-Alpha',
+    'Intended Audience :: Healthcare Industry',
+    'Intended Audience :: Science/Research',
+    'License :: OSI Approved :: Apache Software License',
+    'Natural Language :: English',
+    'Operating System :: OS Independent',
+    'Programming Language :: Python :: 3',
+]
+license = {file = 'LICENSE.md'}
+
+
+[project.optional-dependencies]
+dev = [
+    'django-extensions ~= 3.2.3'
+]
+
+
+[project.urls]
+Homepage = 'https://github.com/EDRN/zipperlab'
+Issues = 'https://github.com/EDRN/zipperlab/issues'
+
+
+[project.scripts]
+
+
+[tool.hatch.version]
+path = 'src/jpl/labcas/zipper/policy/VERSION.txt'
+pattern = '(?P<version>.+)'
+
+
+[tool.hatch.build.targets.wheel]
+packages = ['src/jpl']
+
+
+[tool.hatch.metadata]
+allow-direct-references = true
+
+
+[build-system]
+requires = ['hatchling']
+build-backend = 'hatchling.build'
