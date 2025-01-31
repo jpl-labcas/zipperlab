@@ -41,7 +41,7 @@ jobs:
                     password: ${{secrets.DOCKERHUB_TOKEN}}
             -
                 name: 📚 Repository Checkout
-                uses: actions/checkout@v4.2
+                uses: actions/checkout@v4.2.2
             -
                 name: 🐍 Python Wrangling
                 uses: actions/setup-python@v5.2
