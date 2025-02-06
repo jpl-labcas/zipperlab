@@ -30,3 +30,29 @@ This is the [Django](https://www.djangoproject.com) "data" app ([Python](https:/
 My original notes: https://github.com/EDRN/labcas-ui/issues/215#issuecomment-2231989176
 
 Okay, I think for a first pass we can leave out the status features
+
+
+## Test Payload
+
+```json
+{
+   "email" : "hello@a.co",
+   "files" : [
+      "/labcas-data/labcas-backend/archive/edrn/Prostate_MRI/Images_Site_ElkuApuKkJXw2A/6304573/DICOM/4109",
+      "/labcas-data/labcas-backend/archive/edrn/Prostate_MRI/Images_Site_ElkuApuKkJXw2A/6304573/DICOM/4114",
+      "/labcas-data/labcas-backend/archive/edrn/Prostate_MRI/Images_Site_ElkuApuKkJXw2A/6304573/DICOM/4115",
+      "/labcas-data/labcas-backend/archive/edrn/Prostate_MRI/Images_Site_ElkuApuKkJXw2A/6304573/DICOM/4111",
+      "/labcas-data/labcas-backend/archive/edrn/Prostate_MRI/Images_Site_ElkuApuKkJXw2A/6304573/DICOM/4110",
+      "/labcas-data/labcas-backend/archive/edrn/Prostate_MRI/Images_Site_ElkuApuKkJXw2A/6304573/DICOM/4117",
+      "/labcas-data/labcas-backend/archive/edrn/Prostate_MRI/Images_Site_ElkuApuKkJXw2A/6304573/DICOM/4188",
+      "/labcas-data/labcas-backend/archive/edrn/Prostate_MRI/Images_Site_ElkuApuKkJXw2A/6304573/DICOM/4190",
+      "/labcas-data/labcas-backend/archive/edrn/Prostate_MRI/Images_Site_ElkuApuKkJXw2A/6304573/DICOM/4904",
+      "/labcas-data/labcas-backend/archive/edrn/Prostate_MRI/Images_Site_ElkuApuKkJXw2A/6304573/DICOM/4915"
+   ],
+   "operation" : "initiate"
+}
+```
+You can save that to a file `/tmp/payload.json` and send it as follows:
+
+    curl --request POST --data-binary @/tmp/payload.json http://localhost:6468/edrn/
+
