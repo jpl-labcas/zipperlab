@@ -87,6 +87,7 @@ services:
         entrypoint: ['/app/bin/django-admin', 'worker', '--verbosity', '2']
         volumes:
             -   media:/app/media
+            -   labcas:/labcas-data
         networks:
             -   mainbus
         environment:
@@ -125,6 +126,7 @@ services:
         volumes:
             -   media:/app/media
             -   static:/app/static
+            -   labcas:/labcas-data
         networks:
             -   mainbus
         environment:
@@ -217,6 +219,15 @@ volumes:
         labels:
             org.label-schema.name: PostgreSQL database volume
 
+    # LabCAS data
+    labcas:
+        driver: local
+        driver_opts:
+            type: one
+            device: /labcas-data
+            o: bind
+        labels:
+            org.label-schema.name: LabCAS Data
 
 ...
 
