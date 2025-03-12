@@ -26,6 +26,8 @@ class Command(BaseCommand):
         site = Site.objects.filter(is_default_site=True).first()
         site.site_name, site.hostname, site.port = 'Zipperlab', hostname, port
         site.save()
+
+        # Only needed if we have a pre-existing site
         # old_root = site.root_page.specific
         # if old_root.title == 'Zipperlab':
         #     # No action needed
@@ -34,22 +36,26 @@ class Command(BaseCommand):
         site.save()
         return site
 
-    def _add_archiver(self, site):
+    def _add_archiver(self, site, hostname):
         site.root_page.get_children().all().delete()
         site.root_page.refresh_from_db()
-        archiver = Archiver(title='Early Detection Research Network', slug='edrn')
+        archiver = Archiver(
+            title='Early Detection Research Network', slug='edrn',
+            labcas_url=f'https://{hostname}/'
+        )
         site.root_page.add_child(instance=archiver)
         archiver.save()
 
     def handle(self, *args, **options):
         self.stdout.write('Blooming "Zipperlab" site')
+        hostname = options['hostname']
 
         try:
             settings.WAGTAILREDIRECTS_AUTO_CREATE = False
             settings.WAGTAILSEARCH_BACKENDS['default']['AUTO_UPDATE'] = False
 
             site = self._set_site(options['hostname'], options['port'])  # noqa
-            self._add_archiver(site)
+            self._add_archiver(site, hostname)
 
         finally:
             settings.WAGTAILREDIRECTS_AUTO_CREATE = True
