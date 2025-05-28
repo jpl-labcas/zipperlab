@@ -88,6 +88,7 @@ services:
         volumes:
             -   media:/app/media
             -   labcas:/labcas-data
+            -   local-labcas:/usr/local/labcas
         networks:
             -   mainbus
         environment:
@@ -127,6 +128,7 @@ services:
             -   media:/app/media
             -   static:/app/static
             -   labcas:/labcas-data
+            -   local-labcas:/usr/local/labcas
         networks:
             -   mainbus
         environment:
@@ -228,6 +230,16 @@ volumes:
             o: bind
         labels:
             org.label-schema.name: LabCAS Data
+
+    # Local LabCAS backend archive (and other files)
+    local-labcas:
+        driver: local
+        driver_opts:
+            type: none
+            device: /usr/local/labcas
+            o: bind
+        labels:
+            org.label-schema.name: LabCAS on /usr/local/labcas
 
 ...
 
