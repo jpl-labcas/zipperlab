@@ -85,8 +85,11 @@ def do_create_zip(uuid, output_dir, to_email, files, from_addr, url):
             for file in files:
                 archive_name = file[1:]
                 if os.path.isfile(file):
+                    _logger.info('🤐 Adding file %s to zip archive', file)
                     zipf.write(file, archive_name)
                     count += 1
+                else:
+                    _logger.warning('🤐 File %s is not a file! WHAT THE?', file)
         _logger.info('🤐 Done with %s, wrote %d files', target, count)
         if not url.endswith('/'): url += '/'
         body = _user_success_template.format(zip_url=f'{url}zips/{uuid}.zip', url=url)
