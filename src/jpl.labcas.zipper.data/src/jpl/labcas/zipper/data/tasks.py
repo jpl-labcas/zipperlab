@@ -90,6 +90,13 @@ def do_create_zip(uuid, output_dir, to_email, files, from_addr, url):
                     count += 1
                 else:
                     _logger.warning('🤐 File %s is not a file! WHAT THE?', file)
+
+        # Let's avoid making empty ZIP archives
+        if count == 0:
+            _logger.warning('🤐 No files to add to ZIP archive; deleting it')
+            os.unlink(target)
+            raise RuntimeError('🤐 Refusing to create an empty ZIP archive as there were no files available to add')
+
         _logger.info('🤐 Done with %s, wrote %d files', target, count)
         if not url.endswith('/'): url += '/'
         body = _user_success_template.format(zip_url=f'{url}zips/{uuid}.zip', url=url)
@@ -102,4 +109,4 @@ def do_create_zip(uuid, output_dir, to_email, files, from_addr, url):
         body = _admin_failure_template.format(
             email=to_email, error_message=str(ex), stack_trace=traceback.format_exc()
         )
-        send_email(from_addr, [from_addr], "An error occurred generating a user's ZIP file", body)
+        send_email(from_addr, [from_addr], f"An error occurred generating user {to_email}'s ZIP file", body)
