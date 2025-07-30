@@ -23,7 +23,7 @@ class Archiver(Page):
         help_text='Where on the filesystem to generate ZIP archives archives'
     )
     max_zip_size = models.FloatField(
-        blank=False, default=1.8, help_text='Maximum size of a ZIP file before balking, in gigabytes'
+        blank=False, default=3.8, help_text='Maximum size of a ZIP file before balking, in gigabytes'
     )
     labcas_url = models.URLField(
         blank=False, null=False, default='https://edrn-labcas.jpl.nasa.gov/',
