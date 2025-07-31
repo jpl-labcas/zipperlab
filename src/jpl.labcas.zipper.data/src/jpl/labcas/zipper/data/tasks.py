@@ -90,7 +90,7 @@ def do_create_zip(uuid, output_dir, to_email, files, from_addr, url):
                     archive_name = file[archive_index:]
                 else:
                     # Fallback to just the filename if no 'archive/' found
-                    archive_name = os.path.basename(file)
+                    archive_name = os.path.basename(file)[1:]  # Remove the leading '/'
                 if os.path.isfile(file):
                     _logger.info('🤐 Adding file %s to zip archive', file)
                     zipf.write(file, archive_name)
