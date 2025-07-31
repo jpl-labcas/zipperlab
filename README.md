@@ -29,7 +29,7 @@ TBD.
 
 ### Software Installation
 
-TBD.
+On edrn-docker, the ops listens on 4238 while dev is on 4237.
 
 
 ## 🚢 Containerized Setup

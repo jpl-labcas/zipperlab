@@ -79,11 +79,18 @@ def do_create_zip(uuid, output_dir, to_email, files, from_addr, url):
         os.makedirs(output_dir, exist_ok=True)
 
         # Tested ZIP_BZIP2 and ZIP_LZW and they took longer for sure but also produced larger
-        # ZIP archives with my test data; so sticing with ZIP_DEFLATED which has wide-spread
+        # ZIP archives with my test data; so sticking with ZIP_DEFLATED which has wide-spread
         # compatibility.
         with zipfile.ZipFile(target, 'w', compression=zipfile.ZIP_DEFLATED) as zipf:
             for file in files:
-                archive_name = file[1:]
+                # Extract the archive path from the full file path
+                # Find the last occurrence of 'archive/' in the path
+                archive_index = file.rfind('archive/')
+                if archive_index != -1:
+                    archive_name = file[archive_index:]
+                else:
+                    # Fallback to just the filename if no 'archive/' found
+                    archive_name = os.path.basename(file)
                 if os.path.isfile(file):
                     _logger.info('🤐 Adding file %s to zip archive', file)
                     zipf.write(file, archive_name)

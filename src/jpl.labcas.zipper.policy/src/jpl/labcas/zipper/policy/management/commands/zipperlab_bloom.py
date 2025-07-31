@@ -13,8 +13,8 @@ import argparse
 class Command(BaseCommand):
     help = 'Blooms Zipperlab with initial content'
     _hostname = 'labcas-dev.jpl.nasa.gov'
-    _port = 80
-
+    _port = 443
+    
     def add_arguments(self, parser: argparse.ArgumentParser):
         parser.add_argument('--hostname', help='Hostname of the site (default: %(default)s)', default=self._hostname)
         parser.add_argument('--port', help='Port of the site (default %(default)s)', default=self._port, type=int)
