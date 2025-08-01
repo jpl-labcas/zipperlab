@@ -12,8 +12,6 @@ _logger = logging.getLogger(__name__)
 
 _user_failure_template = '''We're sorry to report that we ran into a problem when creating your ZIP archive.
 
-The exact error message was: {error_message}.
-
 This has been logged and an administrator will be taking a look to see what went wrong.
 
 In the meantime, you can revisit {url} and try again. If you have any questions, please contact is.
