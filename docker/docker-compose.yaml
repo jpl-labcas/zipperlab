@@ -45,7 +45,6 @@ services:
                 target: 443
                 published: ${HTTPS_PORT:-4238}
                 protocol: tcp
-                mode: host
         depends_on:
             -   static_initializer
             -   app
@@ -65,8 +64,7 @@ services:
             -   mainbus
         environment:
             POSTGRES_PASSWORD:
-        restart:
-            on-failure
+        restart: on-failure
         stop_grace_period: 13s
 
     # Cache and Message Broker
@@ -85,9 +83,10 @@ services:
     worker:
         image: edrndocker/zipperlab:${ZIPPERLAB_VERSION:-latest}
         entrypoint: ['/app/bin/django-admin', 'worker', '--verbosity', '2']
+        init: true
         volumes:
             -   media:/app/media
-            -   labcas:/labcas-data
+            -   labcas_nfs:/labcas-data
             -   local-labcas:/usr/local/labcas
         networks:
             -   mainbus
@@ -115,19 +114,19 @@ services:
         stop_grace_period: 13s
         healthcheck:
             disable: true
-            test: ['NONE']
 
 
     # ZIPPERLAB
-    # ~~~~~~
+    # ~~~~~~~~~
     #
     # The actual application; listens publicly but also available via `tls` service and profile.
     app:
         image: edrndocker/zipperlab:${ZIPPERLAB_VERSION:-latest}
+        init: true
         volumes:
             -   media:/app/media
             -   static:/app/static
-            -   labcas:/labcas-data
+            -   labcas_nfs:/labcas-data
             -   local-labcas:/usr/local/labcas
         networks:
             -   mainbus
@@ -225,11 +224,19 @@ volumes:
     labcas:
         driver: local
         driver_opts:
-            type: one
+            type: none
             device: /labcas-data
             o: bind
         labels:
             org.label-schema.name: LabCAS Data
+
+    # LabCAS data but mounted through NFS
+    labcas_nfs:
+        driver: local
+        driver_opts:
+            type: "nfs"
+            o: "addr=137.79.133.4,nfsvers=3,proto=tcp,rw,timeo=600,retrans=2,hard,local_lock=none"
+            device: ":/edrn_data"
 
     # Local LabCAS backend archive (and other files)
     local-labcas:
@@ -241,6 +248,7 @@ volumes:
         labels:
             org.label-schema.name: LabCAS on /usr/local/labcas
 
+            
 ...
 
 # -*- mode: YAML; tab-width: 4 -*-
