@@ -56,8 +56,28 @@ class Archiver(Page):
         return total_size
 
     def _initiate(self, params: dict) -> HttpResponse:
-        _logger.info('🏁 Initiating for email «%s» for %d files', params['email'], len(params['files']))
-        email, files = params['email'], [self._transform_path(f) for f in params['files']]
+        _logger.info(
+            '🏁 Initiating for email «%s» for %d files or for a file of files in %s',
+            params['email'], len(params.get('files', [])), params.get('list_of_files', None)
+        )
+
+        # jpl-labcas/backend#36 requires a new feature: instead of passing a list of files,
+        # you can pass in the name of a file on the server that contains a list of files, and it'll
+        # be used instead.
+        email, files, list_of_files = params['email'], params.get('files', []), params.get('list_of_files', None)
+        if list_of_files:
+            if not os.path.isfile(list_of_files):
+                return HttpResponseBadRequest(f'List of files file {list_of_files} not found or is not a file')
+            with open(list_of_files, 'r') as f:
+                files = [self._transform_path(line.strip()) for line in f.readlines()]
+            try:
+                os.unlink(list_of_files)
+            except Exception:
+                pass
+        elif files:
+            files = [self._transform_path(f) for f in files]
+        else:
+            return HttpResponseBadRequest('No files or list of files provided')
 
         # Check size
         total_size = self._estimate_zip_size(files)
@@ -73,5 +93,12 @@ class Archiver(Page):
     def serve(self, request: HttpRequest) -> HttpResponse:
         if request.method == 'POST':
             payload = json.loads(request.body)
-            if payload.get('operation') == 'initiate': return self._initiate(payload)
-        return super().serve(request)
+            operation = payload.get('operation')
+            if operation == 'initiate':
+                return self._initiate(payload)
+            elif operation is None:
+                return HttpResponseBadRequest('No operation provided')
+            else:
+                return HttpResponseBadRequest(f'Unknown operation {operation}')
+        else:
+            return super().serve(request)
