@@ -57,7 +57,7 @@ services:
     #
     # PostgreSQL on port 5432, not published to host
     db:
-        image: postgres:16.2-alpine3.19
+        image: postgres:16.13-alpine3.23
         volumes:
             -   "database_volume:/var/lib/postgresql/data"
         networks:
